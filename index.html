@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Digital Nursery System - Prototype</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: #f4f6fb;
+      color: #1f2933;
+    }
+
+    .app {
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 16px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-weight: 600;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .tab:hover {
+      background: #eef2ff;
+    }
+
+    .tab.active {
+      background: #4f46e5;
+      color: #ffffff;
+      border-color: #4f46e5;
+    }
+
+    .tab-content {
+      margin-top: 12px;
+    }
+
+    /* Dashboard cards */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .stat-card {
+      padding: 14px;
+      border-radius: 10px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .stat-note {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      padding: 8px 10px;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    th {
+      background: #f9fafb;
+      font-weight: 600;
+      color: #4b5563;
+    }
+
+    tr:hover {
+      background: #f3f4ff;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #4338ca;
+    }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #374151;
+    }
+
+    input, select, textarea {
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border 0.15s ease, box-shadow 0.15s ease;
+      background: #ffffff;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.2);
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .btn-row {
+      margin-top: 14px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+    }
+
+    .btn-primary {
+      background: #4f46e5;
+      color: #ffffff;
+      box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: #4338ca;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .btn-secondary:hover {
+      background: #d1d5db;
+    }
+
+    .muted {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-top: 6px;
+    }
+
+    /* Orders */
+    .order-list {
+      margin-top: 10px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .order-card {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+
+    .order-status {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+
+    .status-pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-completed {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .order-body {
+      font-size: 0.85rem;
+      color: #4b5563;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="card">
+      <header>
+        <div>
+          <div class="title">Digital Nursery System</div>
+          <div class="subtitle">
+            Prototype UI for managing plants, inventory, and basic nursery operations.
+          </div>
+        </div>
+        <span class="badge">Prototype</span>
+      </header>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab active" data-tab="dashboard">Dashboard</button>
+        <button class="tab" data-tab="inventory">Plant Inventory</button>
+        <button class="tab" data-tab="add-plant">Add New Plant</button>
+        <button class="tab" data-tab="orders">Orders</button>
+      </div>
+
+      <!-- Tab Contents -->
+      <div id="dashboard" class="tab-content">
+        <h3>Overview</h3>
+        <p class="muted">
+          Quick summary of nursery activity. Numbers are sample data for demo purposes.
+        </p>
+        <div class="grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Plant Varieties</div>
+            <div class="stat-value" id="totalVarieties">24</div>
+            <div class="stat-note">Includes flowers, shrubs, fruits & indoor plants</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Available Stock (Approx.)</div>
+            <div class="stat-value" id="totalStock">320</div>
+            <div class="stat-note">Seedlings, saplings and potted plants</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Pending Orders</div>
+            <div class="stat-value">5</div>
+            <div class="stat-note">Small retail + bulk landscaping orders</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="inventory" class="tab-content" style="display:none;">
+        <h3>Plant Inventory</h3>
+        <p class="muted">Sample list of plants available in Nature Green Farm & Nursery.</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Plant Name</th>
+              <th>Category</th>
+              <th>Stock</th>
+              <th>Price (₹)</th>
+              <th>Tag</th>
+            </tr>
+          </thead>
+          <tbody id="plantTableBody">
+            <tr>
+              <td>Thuja</td>
+              <td>Ornamental Shrub</td>
+              <td>40</td>
+              <td>150</td>
+              <td><span class="tag">Decoration</span></td>
+            </tr>
+            <tr>
+              <td>Bougainvillea</td>
+              <td>Flowering Plant</td>
+              <td>25</td>
+              <td>120</td>
+              <td><span class="tag">365 Days Flowering</span></td>
+            </tr>
+            <tr>
+              <td>Hibiscus</td>
+              <td>Flowering Shrub</td>
+              <td>30</td>
+              <td>100</td>
+              <td><span class="tag">Perennial</span></td>
+            </tr>
+            <tr>
+              <td>Mango (Sapling)</td>
+              <td>Fruit Tree</td>
+              <td>18</td>
+              <td>220</td>
+              <td><span class="tag">Seasonal Demand</span></td>
+            </tr>
+            <tr>
+              <td>Areca Palm</td>
+              <td>Indoor / Ornamental</td>
+              <td>15</td>
+              <td>350</td>
+              <td><span class="tag">Indoor</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="add-plant" class="tab-content" style="display:none;">
+        <h3>Add New Plant</h3>
+        <p class="muted">
+          This form is a prototype only. It doesn’t connect to a database, but shows how data entry would look.
+        </p>
+
+        <form id="plantForm" onsubmit="event.preventDefault(); addPlant();">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="plantName">Plant Name</label>
+              <input type="text" id="plantName" placeholder="e.g., Rose, Papaya, Neem" required />
+            </div>
+            <div class="form-group">
+              <label for="category">Category</label>
+              <select id="category" required>
+                <option value="">Select category</option>
+                <option>Flowering Plant</option>
+                <option>Fruit Tree</option>
+                <option>Vegetable Plant</option>
+                <option>Ornamental / Indoor</option>
+                <option>Medicinal Plant</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="stock">Available Stock</label>
+              <input type="number" id="stock" min="0" placeholder="e.g., 20" required />
+            </div>
+            <div class="form-group">
+              <label for="price">Price (₹)</label>
+              <input type="number" id="price" min="0" step="1" placeholder="e.g., 150" required />
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top:10px;">
+            <label for="tag">Tag / Note</label>
+            <input type="text" id="tag" placeholder="e.g., Seasonal, Indoor, Fast-growing" />
+          </div>
+
+          <div class="form-group" style="margin-top:10px;">
+            <label for="notes">Care Instructions (Optional)</label>
+            <textarea id="notes" placeholder="Watering schedule, sunlight needs, soil type, etc."></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button type="submit" class="btn btn-primary">Add to Inventory (Demo)</button>
+            <button type="reset" class="btn btn-secondary">Clear</button>
+          </div>
+
+          <p id="formMessage" class="muted" style="display:none; margin-top:8px;">
+            ✅ Plant added to the table above (demo only).
+          </p>
+        </form>
+      </div>
+
+      <div id="orders" class="tab-content" style="display:none;">
+        <h3>Recent Orders (Demo)</h3>
+        <p class="muted">Sample orders to show how the orders section might look.</p>
+
+        <div class="order-list">
+          <div class="order-card">
+            <div class="order-header">
+              <span>Order #NUR-1024</span>
+              <span class="order-status status-pending">Pending</span>
+            </div>
+            <div class="order-body">
+              Customer: <strong>Green Homes Landscaping</strong><br />
+              Items: 10 Thuja, 5 Areca Palm, 8 Bougainvillea<br />
+              Expected Pickup: 18/11/2025
+            </div>
+          </div>
+
+          <div class="order-card">
+            <div class="order-header">
+              <span>Order #NUR-1019</span>
+              <span class="order-status status-completed">Completed</span>
+            </div>
+            <div class="order-body">
+              Customer: <strong>Local Resident - Kurnool</strong><br />
+              Items: 3 Hibiscus, 2 Mango Saplings, 4 Rose Plants<br />
+              Completed on: 12/11/2025
+            </div>
+          </div>
+
+          <div class="order-card">
+            <div class="order-header">
+              <span>Order #NUR-1015</span>
+              <span class="order-status status-completed">Completed</span>
+            </div>
+            <div class="order-body">
+              Customer: <strong>School Garden Project</strong><br />
+              Items: 20 Flowering Plants (Mixed), 5 Shade Trees<br />
+              Completed on: 08/11/2025
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="muted" style="text-align:center; margin-top:8px;">
+      Digital Nursery System • Prototype UI for CSP – Frontend only (no backend/database).
+    </p>
+  </div>
+
+  <script>
+    // Tab switching
+    const tabs = document.querySelectorAll(".tab");
+    const contents = document.querySelectorAll(".tab-content");
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        const targetId = tab.getAttribute("data-tab");
+
+        tabs.forEach(t => t.classList.remove("active"));
+        contents.forEach(c => (c.style.display = "none"));
+
+        tab.classList.add("active");
+        document.getElementById(targetId).style.display = "block";
+      });
+    });
+
+    // Demo: Add plant to table
+    function addPlant() {
+      const name = document.getElementById("plantName").value.trim();
+      const category = document.getElementById("category").value;
+      const stock = document.getElementById("stock").value;
+      const price = document.getElementById("price").value;
+      const tag = document.getElementById("tag").value.trim() || "New Entry";
+
+      if (!name || !category || !stock || !price) return;
+
+      const tbody = document.getElementById("plantTableBody");
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
+        <td>${name}</td>
+        <td>${category}</td>
+        <td>${stock}</td>
+        <td>${price}</td>
+        <td><span class="tag">${tag}</span></td>
+      `;
+
+      tbody.appendChild(row);
+
+      // Update sample stats a bit (demo only)
+      const totalVarEl = document.getElementById("totalVarieties");
+      const totalStockEl = document.getElementById("totalStock");
+      totalVarEl.textContent = Number(totalVarEl.textContent) + 1;
+      totalStockEl.textContent = Number(totalStockEl.textContent) + Number(stock);
+
+      // Show message
+      const msg = document.getElementById("formMessage");
+      msg.style.display = "block";
+
+      setTimeout(() => {
+        msg.style.display = "none";
+      }, 2500);
+
+      document.getElementById("plantForm").reset();
+    }
+  </script>
+</body>
+</html>
