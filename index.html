@@ -401,6 +401,11 @@
 
       <div id="add-plant" class="tab-content" style="display:none;">
         <h3>Add New Plant</h3>
+        <button class="btn btn-primary" style="margin-bottom: 12px;"> 🌿 Open Plant Lens (Identify Plant)
+        </button>
+        <p class="muted" style="margin-bottom: 15px;">
+          *This feature uses AI to identify plants using the camera (prototype view only).
+        </p>
         <p class="muted">
           This form is a prototype only. It doesn’t connect to a database, but shows how data entry would look.
         </p>
@@ -437,6 +442,12 @@
             <label for="tag">Tag / Note</label>
             <input type="text" id="tag" placeholder="e.g., Seasonal, Indoor, Fast-growing" />
           </div>
+
+          <div class="form-group" style="margin-top:10px;">
+            <label for="plantPhoto">Plant Photo (Camera)</label>
+            <input type="file" id="plantPhoto" accept="image/*" capture="environment" />
+          </div>
+
 
           <div class="form-group" style="margin-top:10px;">
             <label for="notes">Care Instructions (Optional)</label>
@@ -562,3 +573,4 @@
   </script>
 </body>
 </html>
+
